@@ -1,0 +1,13 @@
+{
+    "before": "",
+    "after": "",
+    "cycles": 1,
+    "ping_pong_animation": true,
+    "delete_after_end": false,
+    "frames": [
+        "",
+        "",
+        "",
+        ""
+    ]
+}
