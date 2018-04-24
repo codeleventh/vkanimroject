@@ -3,7 +3,7 @@
 Скрипт, отсылающий сообщение VK, ждущий прочтения и многократно редактирующий его с заданной периодичностью.  
 Можно посылать мультики из ascii-арта или эмоджей:
 
-![](https://gist.github.com/codeleventh/a6b2ce4bf933c1689376ed0100111e85/raw/a8c42b5ee18b73f00b0636226bfd2a82cfefa4cd/vkanim.gif)
+![](https://gist.github.com/codeleventh/a6b2ce4bf933c1689376ed0100111e85/raw/fa4d8b318ba80efb7215879030890fb2f14b269c/vkanim.gif)
 
 ## Использование
 
