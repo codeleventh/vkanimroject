@@ -1,8 +1,8 @@
 {
-    "before": "?????? ???????????",
+    "before": "смотри внимательно",
     "after": "",
     "cycles": 2,
-    "ping_pong_animation": false,
+    "ping_pong_animation": true,
     "delete_after_end": false,
     "frames": [
         "🖖🏻",
