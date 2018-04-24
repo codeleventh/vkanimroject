@@ -1,0 +1,14 @@
+{
+  "before": "",
+  "after": "",
+  "cycles": 2,
+  "ping_pong_animation": false,
+  "delete_after_end": false,
+  "frames": [
+    "▒░░▒▓\n░░▒▓▒\n░▒▓▒░",
+    "▓▒░░▒\n▒░░▒▓\n░░▒▓▒",
+    "▒▓▒░░\n▓▒░░▒\n▒░░▒▓",
+    "░▒▓▒░\n▒▓▒░░\n▓▒░░▒",
+    "░░▒▓▒\n░▒▓▒░\n▒▓▒░░"
+  ]
+}
