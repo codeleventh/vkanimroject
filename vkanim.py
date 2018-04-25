@@ -11,12 +11,25 @@ SHORTPAUSE = 2
 LONGPAUSE = 4
 MINSPEED = 0.35  # при меньших значениях ловишь бан мгновенно
 
-# args: py vk.py id speed file
-# example: py vk.py 1 0.75 skinhands.json
+# args: py vk.py receiver_id frame_delay input_file
+# example: py vk.py 1 0.75 moon.json
 
 v = '5.38'  # ¯\_(ツ)_/¯
 session = vk.AuthSession(APP_ID, LOGIN, PASSWORD, scope='messages')
 vk_api = vk.API(session)
+
+
+def doEdit(i):
+    time.sleep(arg_framedelay)
+    if data["isAttachment"] == True:
+        vk_api.messages.edit(
+            peer_id=arg_id, attachment=[data['frames'][i]], message_id=message_id, v=v)
+    else:
+        vk_api.messages.edit(
+            peer_id=arg_id, message=data['frames'][i], message_id=message_id, v=v)
+    print("frame {}/{}".format(i, len(data['frames'])))
+    return
+
 
 try:
     arg_id = sys.argv[1]
@@ -26,6 +39,7 @@ try:
     print("Args parsed.")
 except (IndexError, TypeError, FileNotFoundError, ValueError) as e:
     print("Error. Wrong args: {}.".format(e.args[-1]))
+    print("Usage: py vk.py receiver_id frame_delay input_file\nExample: py vk.py 1 0.75 moon.json")
     exit()
 try:
     data = open(arg_file, encoding="utf8").read()
@@ -44,6 +58,7 @@ data_def = {
     "before": "",
     "after": "",
     "cycles": 1,
+    "isAttachment": False,
     "ping_pong_animation": False,
     "delete_after_end": False,
 }
@@ -58,14 +73,17 @@ else:
     fstmsg = data['before']
 
 try:
-    message_id = vk_api.messages.send(peer_id=arg_id, message=fstmsg, v=v)
+    if data["isAttachment"] == True:
+        message_id = vk_api.messages.send(
+            peer_id=arg_id, attachment=fstmsg, v=v)
+    else:
+        message_id = vk_api.messages.send(peer_id=arg_id, message=fstmsg, v=v)
     print("MSG SEND is OK, the message id is {}".format(message_id))
     time.sleep(SHORTPAUSE)
 
     while True:
         message = vk_api.messages.getById(
             message_id=message_id, preview_length=0, v=v)
-    #     # обработка на баны и ошибки здесь
         is_read = message['items'][0]['read_state']
         if(is_read == 1):
             print("User has read the MSG")
@@ -74,26 +92,23 @@ try:
 
     while (data['cycles'] > 0):
         for i in range(len(data['frames'])):
-            time.sleep(arg_framedelay)
-            response = vk_api.messages.edit(
-                peer_id=arg_id, message=data['frames'][i], message_id=message_id, v=v)
-            print("frame №{}".format(i))
-            # check_response()
+            doEdit(i)
 
         if data['ping_pong_animation'] == True:
             print("vice versa: ")
-            for i in range(len(data['frames'])-2, 0, -1):
-                time.sleep(arg_framedelay)
-                response = vk_api.messages.edit(
-                    peer_id=arg_id, message=data['frames'][i], message_id=message_id, v=v)
-                print("frame №{}".format(i))
-                # check_response()
+            for i in range(len(data['frames']) - 2, 0, -1):
+                doEdit(i)
+
         data['cycles'] -= 1
 
     if data["after"] != "":
         time.sleep(arg_framedelay)
-        response = vk_api.messages.edit(
-            peer_id=arg_id, message=data["after"], message_id=message_id, v=v)
+        if data["isAttachment"] == True:
+            response = vk_api.messages.edit(
+                peer_id=arg_id, attachment=data["after"], message_id=message_id, v=v)
+        else:
+            response = vk_api.messages.edit(
+                peer_id=arg_id, message=data["after"], message_id=message_id, v=v)
 
     if data["delete_after_end"] == True:
         time.sleep(SHORTPAUSE)
